@@ -1,0 +1,24 @@
+# Arquivos e pastas específicos do PHP
+/vendor/
+composer.lock
+
+# Arquivos de configuração local
+.env
+
+# Arquivos de cache e logs
+/logs/
+/cache/
+*.log
+
+# Arquivos específicos do sistema
+.DS_Store
+Thumbs.db
+
+# Arquivos de IDE e editores
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Arquivos de configuração do ambiente
+phpunit.xml
