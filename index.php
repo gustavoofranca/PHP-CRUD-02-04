@@ -1,4 +1,12 @@
 <?php
+session_start();
+
+// Verifica se o usuário está logado
+if (!isset($_SESSION['is_logged_in']) || $_SESSION['is_logged_in'] !== true) {
+    header("Location: login.php");
+    exit;
+}
+
 include_once "./app/conexao/Conexao.php";
 include_once "./app/dao/UsuarioDAO.php";
 include_once "./app/model/Usuario.php";
@@ -82,14 +90,38 @@ $usuariodao = new UsuarioDAO();
                 <img src="./assets/Logo.png" width="40" height="40" class="d-inline-block align-top mr-2" alt="">
                 Gusta's Hamburgueria
             </a>
+            <div class="d-flex align-items-center">
+                <span class="text-light mr-3">Olá, <?php echo htmlspecialchars($_SESSION['nome']); ?></span>
+                <a href="app/controller/AuthController.php?logout=true" class="btn btn-outline-light btn-sm">Sair</a>
+            </div>
         </div>
     </nav>
+    
+    <?php if (isset($_SESSION['errors'])): ?>
+        <div class="container mt-3">
+            <?php foreach ($_SESSION['errors'] as $error): ?>
+                <div class="alert alert-danger" role="alert">
+                    <?php echo $error; ?>
+                </div>
+            <?php endforeach; ?>
+            <?php unset($_SESSION['errors']); ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if (isset($_SESSION['success'])): ?>
+        <div class="container mt-3">
+            <div class="alert alert-success" role="alert">
+                <?php echo $_SESSION['success']; ?>
+            </div>
+            <?php unset($_SESSION['success']); ?>
+        </div>
+    <?php endif; ?>
     <div class="container">
         <form action="app/controller/UsuarioController.php" method="POST">
             <div class="row">
                 <div class="col-md-3">
                     <label>Nome do Cliente</label>
-                    <input type="text" name="nome" value="" autofocus class="form-control" require />
+                    <input type="text" name="nome" value="" autofocus class="form-control" required />
                 </div>
                 <div class="col-md-3">
                     <label>Hambúrguer</label>
@@ -115,6 +147,10 @@ $usuariodao = new UsuarioDAO();
                         <option value="Sem Complemento">Sem Complemento</option>
                     </select>
                 </div>
+                <div class="col-md-3">
+                    <label>Telefone</label>
+                    <input type="tel" name="telefone" class="form-control" required placeholder="(99) 99999-9999" />
+                </div>
                 <div class="col-md-2">
                     <br>
                     <button class="btn btn-primary" type="submit" name="cadastrar">Registrar Pedido</button>
@@ -131,6 +167,7 @@ $usuariodao = new UsuarioDAO();
                         <th>Hambúrguer</th>
                         <th>Bebida</th>
                         <th>Complemento</th>
+                        <th>Telefone</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -142,6 +179,7 @@ $usuariodao = new UsuarioDAO();
                             <td><?= $usuario->getHamburguer() ?></td>
                             <td><?= $usuario->getBebida() ?></td>
                             <td><?= $usuario->getComplemento() ?></td>
+                            <td><?= $usuario->getTelefone() ?></td>
                             <td class="text-center">
                                 <button class="btn  btn-warning btn-sm" data-toggle="modal" data-target="#editar><?= $usuario->getId() ?>">
                                     Modificar
@@ -192,12 +230,16 @@ $usuariodao = new UsuarioDAO();
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label>Complemento</label>
-                                                    <select name="complemento" class="form-control">
+                                                    <select name="complemento" class="form-control" required>
                                                         <option value="Batata Frita" <?= $usuario->getComplemento() == 'Batata Frita' ? 'selected' : '' ?>>Batata Frita</option>
                                                         <option value="Onion Rings" <?= $usuario->getComplemento() == 'Onion Rings' ? 'selected' : '' ?>>Onion Rings</option>
                                                         <option value="Nuggets" <?= $usuario->getComplemento() == 'Nuggets' ? 'selected' : '' ?>>Nuggets</option>
                                                         <option value="Sem Complemento" <?= $usuario->getComplemento() == 'Sem Complemento' ? 'selected' : '' ?>>Sem Complemento</option>
                                                     </select>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label>Telefone</label>
+                                                    <input type="tel" name="telefone" value="<?= $usuario->getTelefone() ?>" class="form-control" required placeholder="(99) 99999-9999" />
                                                 </div>
 
                                                     </select>

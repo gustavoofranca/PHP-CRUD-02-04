@@ -7,6 +7,7 @@ class Usuario{
     private $hamburguer;
     private $bebida;
     private $complemento;
+    private $telefone;
     
     function getId() {
         return $this->id;
@@ -48,7 +49,12 @@ class Usuario{
         $this->complemento = $complemento;
     }
 
+    function getTelefone() {
+        return $this->telefone;
+    }
 
-    
+    function setTelefone($telefone) {
+        $this->telefone = $telefone;
+    }
 }
 

@@ -7,15 +7,16 @@ class UsuarioDAO{
     public function create(Usuario $usuario) {
         try {
             $sql = "INSERT INTO usuario (                   
-                  nome,hamburguer,bebida,complemento)
+                  nome,hamburguer,bebida,complemento,telefone)
                   VALUES (
-                  :nome,:hamburguer,:bebida,:complemento)";
+                  :nome,:hamburguer,:bebida,:complemento,:telefone)";
 
             $p_sql = Conexao::getConexao()->prepare($sql);
             $p_sql->bindValue(":nome", $usuario->getNome());
             $p_sql->bindValue(":hamburguer", $usuario->getHamburguer());
             $p_sql->bindValue(":bebida", $usuario->getBebida());
             $p_sql->bindValue(":complemento", $usuario->getComplemento());
+            $p_sql->bindValue(":telefone", $usuario->getTelefone());
             
             return $p_sql->execute();
         } catch (Exception $e) {
@@ -45,7 +46,8 @@ class UsuarioDAO{
                   nome=:nome,
                   hamburguer=:hamburguer,
                   bebida=:bebida,
-                  complemento=:complemento                  
+                  complemento=:complemento,
+                  telefone=:telefone                  
                                                                        
                   WHERE id = :id";
             $p_sql = Conexao::getConexao()->prepare($sql);
