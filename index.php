@@ -1,12 +1,6 @@
 <?php
 session_start();
 
-// Verifica se o usuário está logado
-if (!isset($_SESSION['is_logged_in']) || $_SESSION['is_logged_in'] !== true) {
-    header("Location: login.php");
-    exit;
-}
-
 include_once "./app/conexao/Conexao.php";
 include_once "./app/dao/UsuarioDAO.php";
 include_once "./app/model/Usuario.php";
